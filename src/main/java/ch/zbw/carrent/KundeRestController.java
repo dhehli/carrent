@@ -1,0 +1,81 @@
+package ch.zbw.carrent;
+
+import java.net.URI;
+import java.util.Collection;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+@RequestMapping("/kunde")
+@RestController
+public class KundeRestController {
+
+	private KundeService kundeService;
+	
+	@Autowired 
+	private KundeRepository kundeRep;
+	@Autowired 
+	private SachbearbeiterRepository sachRep;
+	
+	public KundeRestController(KundeRepository kundeRep, SachbearbeiterRepository sachRep) 
+	{
+		this.kundeRep = kundeRep;
+		this.sachRep = sachRep;
+	}
+	@GetMapping("/kunden")
+	public Iterable<Kunde> list() {
+		return kundeRep.findAll();
+	}
+	@RequestMapping(method = RequestMethod.GET, value = "/{kundenNr}")
+	public Kunde getReservation(@PathVariable int id) {
+		return this.kundeRep.findByKundenId(id);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/{id}")
+	ResponseEntity<?> add(@RequestBody Kunde input, @PathVariable("id")int id) {
+					Sachbearbeiter sachB = sachRep.findById(id);
+					Kunde result = kundeRep.save(new Kunde(input.getName(), input.getStrasse(), input.getStrasse(),input.getPlz(), input.getOrt(),sachB));
+
+					URI location = ServletUriComponentsBuilder
+						.fromCurrentRequest().path("/{id}")
+						.buildAndExpand(result.getKundenId()).toUri();
+
+					return ResponseEntity.created(location).build();
+	
+
+	}
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public String delete(@PathVariable("id") int id, HttpServletResponse response) {
+	    
+	    Kunde kunde = kundeRep.findByKundenId(id);
+	    // true -> can delete
+	    // false -> cannot delete, f.e. is FK reference somewhere
+	    kundeRep.delete(kunde); 
+
+	  /*  if (!wasOk) {
+	        // will write to user which item couldn't be deleted
+	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        model.addAttribute("item", item);
+	        return "items/error";   
+	    }*/
+
+	    return "redirect:/kunden";
+	}
+
+
+
+}
