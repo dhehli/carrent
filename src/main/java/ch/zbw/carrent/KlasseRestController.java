@@ -47,7 +47,21 @@ public class KlasseRestController {
 	ResponseEntity<?> add(@RequestBody Klasse input) {
 					
 					Klasse result = klasseRep.save(new Klasse(input.getKlassenName(), input.getTagesgebuehr()));
+					URI location = ServletUriComponentsBuilder
+						.fromCurrentRequest().path("/{id}")
+						.buildAndExpand(result.getId()).toUri();
 
+					return ResponseEntity.created(location).build();
+	
+
+	}
+	@RequestMapping(method = RequestMethod.PUT)
+	ResponseEntity<?> edit(@RequestBody Klasse input) {
+					
+					Klasse result = klasseRep.findById(input.getId());
+					result.setKlassenName(input.getKlassenName());
+					result.setTagesgebuehr(input.getTagesgebuehr());
+					klasseRep.save(result);
 					URI location = ServletUriComponentsBuilder
 						.fromCurrentRequest().path("/{id}")
 						.buildAndExpand(result.getId()).toUri();
