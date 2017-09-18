@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,11 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-@RequestMapping("/kunde")
+@CrossOrigin(origins = "http://localhost:8080")
+@RequestMapping("restAPI/kunde")
 @RestController
 public class KundeRestController {
-
-	private KundeService kundeService;
 	
 	@Autowired 
 	private KundeRepository kundeRep;
@@ -40,7 +40,7 @@ public class KundeRestController {
 	public Iterable<Kunde> list() {
 		return kundeRep.findAll();
 	}
-	@RequestMapping(method = RequestMethod.GET, value = "/{kundenNr}")
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public Kunde getReservation(@PathVariable int id) {
 		return this.kundeRep.findByKundenId(id);
 	}
@@ -50,6 +50,28 @@ public class KundeRestController {
 					Sachbearbeiter sachB = sachRep.findById(id);
 					Kunde result = kundeRep.save(new Kunde(input.getName(), input.getStrasse(), input.getStrasse(),input.getPlz(), input.getOrt(),sachB));
 
+					URI location = ServletUriComponentsBuilder
+						.fromCurrentRequest().path("/{id}")
+						.buildAndExpand(result.getKundenId()).toUri();
+
+					return ResponseEntity.created(location).build();
+	
+
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT)
+	ResponseEntity<?> edit(@RequestBody Kunde input) {
+					
+					Kunde result = kundeRep.findByKundenId(input.getKundenId());
+					Sachbearbeiter sachResult = sachRep.findById(input.getSachBearbeiter().getId());
+					result.setName(input.getName());
+					result.setOrt(input.getOrt());
+					result.setPlz(input.getPlz());
+					result.setStrasse(input.getStrasse());
+					result.setVorname(input.getVorname());
+					result.setSachBearbeiter(sachResult);
+					
+					kundeRep.save(result);
 					URI location = ServletUriComponentsBuilder
 						.fromCurrentRequest().path("/{id}")
 						.buildAndExpand(result.getKundenId()).toUri();

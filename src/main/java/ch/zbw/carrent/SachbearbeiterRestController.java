@@ -6,9 +6,8 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,17 +16,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("sachbearbeiter")
 public class SachbearbeiterRestController {
 	
-private SachbearbeiterService sachbService;
 @Autowired 
 private SachbearbeiterRepository sachRep;
+@Autowired 
+private KundeRepository kundeRep;
 	
-	public SachbearbeiterRestController(SachbearbeiterRepository sachRep) 
+	public SachbearbeiterRestController(SachbearbeiterRepository sachRep, KundeRepository kundeRep) 
 	{
 		this.sachRep = sachRep;
+		this.kundeRep = kundeRep;
 	}
 	@GetMapping("/sachbearbeiterList")
 	public Iterable<Sachbearbeiter> list() {
@@ -42,6 +44,21 @@ private SachbearbeiterRepository sachRep;
 				Sachbearbeiter result = sachRep.save(new Sachbearbeiter(input.getName(), input.getVorName()));
 					URI location = ServletUriComponentsBuilder
 						.fromCurrentRequest().path("/{sachbearbeiterNr}")
+						.buildAndExpand(result.getId()).toUri();
+
+					return ResponseEntity.created(location).build();
+	
+
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT)
+	ResponseEntity<?> edit(@RequestBody Sachbearbeiter input) {
+					
+					Sachbearbeiter result = sachRep.findById(input.getId());
+					result.setName(input.getName());
+					result.setVorName(input.getVorName());
+					URI location = ServletUriComponentsBuilder
+						.fromCurrentRequest().path("/{id}")
 						.buildAndExpand(result.getId()).toUri();
 
 					return ResponseEntity.created(location).build();

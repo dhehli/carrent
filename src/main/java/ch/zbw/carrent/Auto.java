@@ -17,7 +17,6 @@ public class Auto {
 	@OneToMany(mappedBy = "auto")
     private Set<Reservation> reservationen = new HashSet<>();
 	
-	@JsonIgnore
     @ManyToOne
     private Klasse klasse;
 	

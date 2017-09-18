@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,11 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("auto")
+@RequestMapping("restAPI/auto")
 public class AutoRestController {
-
-	private AutoService autoService;
 
 	@Autowired 
 	private AutoRepository autoRep;
@@ -52,6 +52,25 @@ public class AutoRestController {
 	
 
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT)
+	ResponseEntity<?> edit(@RequestBody Auto input) {
+					
+					Auto result = autoRep.findById(input.getId());
+					result.setKlasse(input.getKlasse());
+					result.setMarke(input.getMarke());
+					result.setTyp(input.getTyp());
+					autoRep.save(result);
+					URI location = ServletUriComponentsBuilder
+						.fromCurrentRequest().path("/{id}")
+						.buildAndExpand(result.getId()).toUri();
+
+					return ResponseEntity.created(location).build();
+	
+
+	}
+	
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public String delete(@PathVariable("id") int id, HttpServletResponse response) {
 	    

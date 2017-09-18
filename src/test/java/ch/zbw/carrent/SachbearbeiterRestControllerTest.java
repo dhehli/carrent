@@ -76,7 +76,7 @@ public class SachbearbeiterRestControllerTest {
 	    
 	    @Test
 	    public void getAllSachbearbeiter() throws Exception {
-	        mockMvc.perform(get("/sachbearbeiter/sachbearbeiterList"))
+	        mockMvc.perform(get("restAPI/sachbearbeiter/sachbearbeiterList"))
 	                .andExpect(status().isOk())
 	                .andExpect(content().contentType(contentType))
 	                .andExpect(jsonPath("$[0].id", is(this.sachList.get(0).getId())))
@@ -91,7 +91,7 @@ public class SachbearbeiterRestControllerTest {
 	        String sachBJson = json(new Sachbearbeiter(
 	               "Sachb3", "Jupiter"));
 
-	        this.mockMvc.perform(post("/sachbearbeiter")
+	        this.mockMvc.perform(post("restAPI/sachbearbeiter")
 	                .contentType(contentType)
 	                .content(sachBJson))
 	                .andExpect(status().isCreated());
@@ -99,7 +99,7 @@ public class SachbearbeiterRestControllerTest {
 	    @Test
 	    public void deleteSachbearbeiter() throws Exception {
 	        Sachbearbeiter sach = sachRep.findByName("Sachb1");
-	    	this.mockMvc.perform(delete("/sachbearbeiter/" + sach.getId())
+	    	this.mockMvc.perform(delete("restAPI/sachbearbeiter/" + sach.getId())
 	                .contentType(MediaType.APPLICATION_JSON))
 	                .andExpect(status().isOk());
 	    }
