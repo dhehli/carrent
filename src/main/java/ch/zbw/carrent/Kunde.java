@@ -47,7 +47,7 @@ public class Kunde
 	}
 	public Kunde() 
 	{
-		
+		super();
 	}
 
 	public int getKundenId() {

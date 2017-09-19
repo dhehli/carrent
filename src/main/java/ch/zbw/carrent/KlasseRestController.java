@@ -18,7 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("klasse")
+@RequestMapping("restAPI/klasse")
 public class KlasseRestController {
 	
 	@Autowired 
