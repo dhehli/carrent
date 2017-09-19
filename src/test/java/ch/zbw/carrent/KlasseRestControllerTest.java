@@ -75,7 +75,7 @@ public class KlasseRestControllerTest {
     }
     @Test
     public void getAllKlassen() throws Exception {
-        mockMvc.perform(get("/klasse/klassen"))
+        mockMvc.perform(get("/restAPI/klasse/klassen"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$[0].id", is(this.klasseList.get(0).getId())))

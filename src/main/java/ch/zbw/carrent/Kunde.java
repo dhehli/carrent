@@ -25,7 +25,6 @@ public class Kunde
 	@OneToMany(mappedBy = "kunde")
     private Set<Reservation> reservationen = new HashSet<>();
 	
-	@JsonIgnore
     @ManyToOne
     private Sachbearbeiter sachBearbeiter;
 	

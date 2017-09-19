@@ -82,7 +82,7 @@ public class AutoRestControllerTest {
     
     @Test
     public void getAllAutos() throws Exception {
-        mockMvc.perform(get("/autos/auto"))
+        mockMvc.perform(get("/restAPI/auto/autos"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$[0].id", is(this.autoList.get(0).getId())))
@@ -96,7 +96,7 @@ public class AutoRestControllerTest {
     public void createAuto() throws Exception {
         String autoJson = json(new Auto("BMW", "I8", klasse));
 
-        this.mockMvc.perform(post("/auto/" + klasse.getId())
+        this.mockMvc.perform(post("restAPI/auto/" + klasse.getId())
                 .contentType(contentType)
                 .content(autoJson))
                 .andExpect(status().isCreated());
@@ -104,7 +104,7 @@ public class AutoRestControllerTest {
     @Test
     public void deleteAuto() throws Exception {
         Auto auto = autoRep.findByMarke("Audi");
-    	this.mockMvc.perform(delete("/auto/" + auto.getId())
+    	this.mockMvc.perform(delete("restAPI/auto/" + auto.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

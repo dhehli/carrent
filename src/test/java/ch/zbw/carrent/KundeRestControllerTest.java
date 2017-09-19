@@ -82,7 +82,7 @@ public class KundeRestControllerTest {
     }
     @Test
     public void getAllKunden() throws Exception {
-        mockMvc.perform(get("/kunde/kunden"))
+        mockMvc.perform(get("/restAPI/kunde/kunden"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$[0].kundenId", is(this.kundeList.get(0).getKundenId())))
@@ -96,7 +96,7 @@ public class KundeRestControllerTest {
     public void createKunde() throws Exception {
         String kundeJson = json(new Kunde("Kunde2", "Peter", "kundenstrasse2", 9000, "St.Gallen", sachB));
 
-        this.mockMvc.perform(post("/kunde/" + sachB.getId())
+        this.mockMvc.perform(post("/restAPI/kunde/" + sachB.getId())
                 .contentType(contentType)
                 .content(kundeJson))
                 .andExpect(status().isCreated());
@@ -104,7 +104,7 @@ public class KundeRestControllerTest {
     @Test
     public void deleteKunde() throws Exception {
         Kunde kunde = kundeRep.findByName("Kunde1");
-    	this.mockMvc.perform(delete("/kunde/" + kunde.getKundenId())
+    	this.mockMvc.perform(delete("/restAPI/kunde/" + kunde.getKundenId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

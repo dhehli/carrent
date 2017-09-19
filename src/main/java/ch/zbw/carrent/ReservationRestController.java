@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+@CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("reservation")
+@RequestMapping("restAPI/reservation")
 public class ReservationRestController {
-	private ReservationService resService;
 	
 	@Autowired 
 	private ReservationRepository resRep;
@@ -28,9 +29,11 @@ public class ReservationRestController {
 	private AutoRepository autoRep;
 	
 	
-	public ReservationRestController(ReservationService resService) 
+	public ReservationRestController(ReservationRepository resRep,KundeRepository kundeRep,AutoRepository autoRep) 
 	{
-		this.resService = resService;
+		this.resRep = resRep;
+		this.autoRep = autoRep;
+		this.kundeRep = kundeRep;
 	}
 	@GetMapping("/reservationen")
 	public Iterable<Reservation> list() {
@@ -56,6 +59,26 @@ public class ReservationRestController {
 	
 
 	}
+	
+	@RequestMapping(method = RequestMethod.PUT)
+	ResponseEntity<?> edit(@RequestBody Reservation input) {
+					
+					Reservation result = resRep.findByResId(input.getResId());
+					Auto autoResult = autoRep.findById(input.getAuto().getId());
+					Kunde kundeResult = kundeRep.findByKundenId(input.getKunde().getKundenId());
+					result.setTage(input.getTage());
+					result.setAuto(autoResult);
+					result.setKunde(kundeResult);
+					resRep.save(result);
+					URI location = ServletUriComponentsBuilder
+						.fromCurrentRequest().path("/{id}")
+						.buildAndExpand(result.getResId()).toUri();
+
+					return ResponseEntity.created(location).build();
+	
+
+	}
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public String delete(@PathVariable("id") int id, HttpServletResponse response) {
 	    

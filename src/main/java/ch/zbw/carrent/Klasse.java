@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,10 +13,12 @@ import javax.persistence.OneToMany;
 @Entity
 public class Klasse {
 
-	@OneToMany(mappedBy = "klasse", cascade = CascadeType.REMOVE)
-    private Set<Auto> autos = new HashSet<>();
+/*	@OneToMany(mappedBy = "klasse", cascade = CascadeType.REMOVE)
+    private Set<Auto> autos = new HashSet<>();*/
 	
-	@Id	 @GeneratedValue
+	@Id	 
+	@GeneratedValue
+	@Column(name = "klasse_id")
 	private int id;
 	private String klassenName;
 	private int tagesgebuehr;
@@ -45,7 +48,7 @@ public class Klasse {
 	public void setTagesgebuehr(int tagesgebuehr) {
 		this.tagesgebuehr = tagesgebuehr;
 	}
-	public Set<Auto> getAutos() {
+/*	public Set<Auto> getAutos() {
 		return autos;
-	}
+	}*/
 }
