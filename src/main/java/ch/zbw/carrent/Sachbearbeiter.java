@@ -11,8 +11,8 @@ import javax.persistence.OneToMany;
 @Entity
 public class Sachbearbeiter {
 
-	@OneToMany(mappedBy = "sachBearbeiter")
-    private Set<Kunde> kunden = new HashSet<>();
+	/*@OneToMany(mappedBy = "sachBearbeiter")
+    private Set<Kunde> kunden = new HashSet<>();*/
 	
 	@Id @GeneratedValue
 	private int id;
@@ -47,12 +47,12 @@ public class Sachbearbeiter {
 		this.vorName = vorName;
 	}
 
-	public Set<Kunde> getKunden() {
+	/*public Set<Kunde> getKunden() {
 		return kunden;
 	}
 
 	public void setKunden(Set<Kunde> kunden) {
 		this.kunden = kunden;
-	}
+	}*/
 	
 }

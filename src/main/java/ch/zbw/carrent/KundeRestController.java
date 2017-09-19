@@ -42,6 +42,7 @@ public class KundeRestController {
 	}
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public Kunde getReservation(@PathVariable int id) {
+		//Kunde k = kundeRep.findByKundenId(id);
 		return this.kundeRep.findByKundenId(id);
 	}
 	
