@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin
 @RestController
 @RequestMapping("restAPI/klasse")
 public class KlasseRestController {
@@ -28,7 +29,7 @@ public class KlasseRestController {
 	{
 		this.klasseRep = klasseRep;
 	}
-	@GetMapping("/klassen")
+	@GetMapping("")
 	public Iterable<Klasse> list() {
 		return klasseRep.findAll();
 	}
@@ -55,10 +56,10 @@ public class KlasseRestController {
 	
 
 	}
-	@RequestMapping(method = RequestMethod.PUT)
-	ResponseEntity<?> edit(@RequestBody Klasse input) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	ResponseEntity<?> edit(@PathVariable("id") int id, @RequestBody Klasse input) {
 					
-					Klasse result = klasseRep.findById(input.getId());
+					Klasse result = klasseRep.findById(id);
 					result.setKlassenName(input.getKlassenName());
 					result.setTagesgebuehr(input.getTagesgebuehr());
 					klasseRep.save(result);
@@ -87,8 +88,5 @@ public class KlasseRestController {
 
 	    return "redirect:/klassen";
 	}
-
-
-	
 
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin
 @RestController
 @RequestMapping("restAPI/auto")
 public class AutoRestController {
@@ -30,7 +30,7 @@ public class AutoRestController {
 		this.autoRep = autoRep;
 		this.klasseRep = klasseRep;
 	}
-	@GetMapping("/autos")
+	@GetMapping("")
 	public Iterable<Auto> list() {
 		return autoRep.findAll();
 	}
@@ -53,10 +53,10 @@ public class AutoRestController {
 
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT)
-	ResponseEntity<?> edit(@RequestBody Auto input) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	ResponseEntity<?> edit(@PathVariable("id") int id, @RequestBody Auto input) {
 					
-					Auto result = autoRep.findById(input.getId());
+					Auto result = autoRep.findById(id);
 					result.setKlasse(input.getKlasse());
 					result.setMarke(input.getMarke());
 					result.setTyp(input.getTyp());
