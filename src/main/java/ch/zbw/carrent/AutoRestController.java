@@ -39,9 +39,11 @@ public class AutoRestController {
 		return this.autoRep.findById(id);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/{id}")
-	ResponseEntity<?> add(@RequestBody Auto input, @PathVariable("id") int id) {
-		Klasse klasse = klasseRep.findById(id);
+
+	@RequestMapping(method = RequestMethod.POST)
+	ResponseEntity<?> add(@RequestBody Auto input) {			
+		Klasse klasse = klasseRep.findById(input.getKlasse().getId());
+
 		Auto result = autoRep.save(new Auto(input.getMarke(), input.getTyp(), klasse));
 	
 		URI location = ServletUriComponentsBuilder
@@ -53,8 +55,9 @@ public class AutoRestController {
 
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	ResponseEntity<?> edit(@PathVariable("id") int id, @RequestBody Auto input) {
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	ResponseEntity<?> edit(@RequestBody Auto input, @PathVariable("id") int id) {
 					
 					Auto result = autoRep.findById(id);
 					result.setKlasse(input.getKlasse());

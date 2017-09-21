@@ -45,8 +45,8 @@ public class ReservationRestController {
 		return this.resRep.findByResId(resId);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
-	ResponseEntity<?> add(@RequestBody Reservation input, int autoId, int kundeId) {
+	@RequestMapping(method = RequestMethod.POST,value = "/{autoId}/{kundeId}")
+	ResponseEntity<?> add(@RequestBody Reservation input, @PathVariable int autoId, @PathVariable int kundeId) {
 					Kunde kunde = kundeRep.findByKundenId(kundeId);
 					Auto auto = autoRep.findById(autoId);
 					Reservation result = resRep.save(new Reservation(input.getTage(), kunde, auto));

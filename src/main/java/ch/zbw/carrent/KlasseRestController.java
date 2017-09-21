@@ -56,8 +56,9 @@ public class KlasseRestController {
 	
 
 	}
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	ResponseEntity<?> edit(@PathVariable("id") int id, @RequestBody Klasse input) {
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	ResponseEntity<?> edit(@RequestBody Klasse input, @PathVariable("id") int id ) {
 					
 					Klasse result = klasseRep.findById(id);
 					result.setKlassenName(input.getKlassenName());
@@ -68,8 +69,6 @@ public class KlasseRestController {
 						.buildAndExpand(result.getId()).toUri();
 
 					return ResponseEntity.created(location).build();
-	
-
 	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public String delete(@PathVariable("id") int id, HttpServletResponse response) {

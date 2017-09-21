@@ -47,8 +47,8 @@ private KundeRepository kundeRep;
 
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT)
-	ResponseEntity<?> edit(@RequestBody Sachbearbeiter input) {
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	ResponseEntity<?> edit(@RequestBody Sachbearbeiter input, @PathVariable("id") int id) {
 					
 					Sachbearbeiter result = sachRep.findById(input.getId());
 					result.setName(input.getName());
