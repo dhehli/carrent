@@ -59,10 +59,10 @@ public class KundeRestController {
 
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT)
-	ResponseEntity<?> edit(@RequestBody Kunde input) {
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	ResponseEntity<?> edit(@RequestBody Kunde input, @PathVariable("id") int id) {
 					
-					Kunde result = kundeRep.findByKundenId(input.getKundenId());
+					Kunde result = kundeRep.findByKundenId(id);
 					Sachbearbeiter sachResult = sachRep.findById(input.getSachBearbeiter().getId());
 					result.setName(input.getName());
 					result.setOrt(input.getOrt());
