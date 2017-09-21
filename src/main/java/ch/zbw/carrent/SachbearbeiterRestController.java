@@ -35,6 +35,12 @@ private KundeRepository kundeRep;
 	public Iterable<Sachbearbeiter> list() {
 		return sachRep.findAll();
 	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
+	public Sachbearbeiter getSachbearbeiter(@PathVariable int id) {
+		return this.sachRep.findById(id);
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	ResponseEntity<?> add(@RequestBody Sachbearbeiter input) {
 				Sachbearbeiter result = sachRep.save(new Sachbearbeiter(input.getName(), input.getVorName()));
