@@ -45,9 +45,9 @@ public class KundeRestController {
 		return this.kundeRep.findByKundenId(id);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/{id}")
-	ResponseEntity<?> add(@RequestBody Kunde input, @PathVariable("id")int id) {
-					Sachbearbeiter sachB = sachRep.findById(id);
+	@RequestMapping(method = RequestMethod.POST)
+	ResponseEntity<?> add(@RequestBody Kunde input) {
+					Sachbearbeiter sachB = sachRep.findById(input.getSachBearbeiter().getId());
 					Kunde result = kundeRep.save(new Kunde(input.getName(), input.getStrasse(), input.getStrasse(),input.getPlz(), input.getOrt(),sachB));
 
 					URI location = ServletUriComponentsBuilder
