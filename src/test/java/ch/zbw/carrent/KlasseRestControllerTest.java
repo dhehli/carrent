@@ -90,7 +90,7 @@ public class KlasseRestControllerTest {
         String klasseJson = json(new Klasse(
                "Kombi", 200));
 
-        this.mockMvc.perform(post("/klasse")
+        this.mockMvc.perform(post("restAPI/klasse")
                 .contentType(contentType)
                 .content(klasseJson))
                 .andExpect(status().isCreated());
@@ -98,7 +98,7 @@ public class KlasseRestControllerTest {
     @Test
     public void deleteKlasse() throws Exception {
         Klasse klasse = klasseRep.findByKlassenName("Luxus");
-    	this.mockMvc.perform(delete("/klasse/" + klasse.getId())
+    	this.mockMvc.perform(delete("restAPI/klasse/" + klasse.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

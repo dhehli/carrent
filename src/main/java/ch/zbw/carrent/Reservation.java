@@ -13,11 +13,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Reservation {
 
 	
-		@JsonIgnore
 	    @ManyToOne
 	    private Kunde kunde;
 		
-		@JsonIgnore
 		@ManyToOne
 		private Auto auto;
 		
