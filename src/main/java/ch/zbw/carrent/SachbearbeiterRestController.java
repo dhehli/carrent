@@ -18,7 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @CrossOrigin
 @RestController
-@RequestMapping("sachbearbeiter")
+@RequestMapping("restAPI/sachbearbeiter")
 public class SachbearbeiterRestController {
 	
 @Autowired 
@@ -31,7 +31,7 @@ private KundeRepository kundeRep;
 		this.sachRep = sachRep;
 		this.kundeRep = kundeRep;
 	}
-	@GetMapping("/sachbearbeiterList")
+	@GetMapping("")
 	public Iterable<Sachbearbeiter> list() {
 		return sachRep.findAll();
 	}

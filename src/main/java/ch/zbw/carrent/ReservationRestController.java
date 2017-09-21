@@ -35,7 +35,7 @@ public class ReservationRestController {
 		this.autoRep = autoRep;
 		this.kundeRep = kundeRep;
 	}
-	@GetMapping("/reservationen")
+	@GetMapping("")
 	public Iterable<Reservation> list() {
 		return resRep.findAll();
 	}
