@@ -36,7 +36,7 @@ public class KundeRestController {
 		this.kundeRep = kundeRep;
 		this.sachRep = sachRep;
 	}
-	@GetMapping("/kunden")
+	@GetMapping("")
 	public Iterable<Kunde> list() {
 		return kundeRep.findAll();
 	}
