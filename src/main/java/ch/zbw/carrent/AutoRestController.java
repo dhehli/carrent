@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("restAPI/auto")
 public class AutoRestController {
@@ -40,7 +40,7 @@ public class AutoRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/{id}")
-	ResponseEntity<?> add(@RequestBody Auto input, @PathVariable("id") int id) {			
+	ResponseEntity<?> add(@RequestBody Auto input, @PathVariable("id") int id) {
 		Klasse klasse = klasseRep.findById(id);
 		Auto result = autoRep.save(new Auto(input.getMarke(), input.getTyp(), klasse));
 	
