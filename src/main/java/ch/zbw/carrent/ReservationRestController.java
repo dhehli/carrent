@@ -45,7 +45,7 @@ public class ReservationRestController {
 		return this.resRep.findByResId(resId);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST,value = "/{autoId}/{kundeId}")
+	@RequestMapping(method = RequestMethod.POST)
 	ResponseEntity<?> add(@RequestBody Reservation input, @PathVariable int autoId, @PathVariable int kundeId) {
 					Kunde kunde = kundeRep.findByKundenId(kundeId);
 					Auto auto = autoRep.findById(autoId);
@@ -61,10 +61,10 @@ public class ReservationRestController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	ResponseEntity<?> edit(@RequestBody Reservation input) {
+	ResponseEntity<?> edit(@RequestBody Reservation input, @PathVariable int autoId, @PathVariable int kundeId) {
 					
-					Reservation result = resRep.findByResId(input.getResId());
-					Auto autoResult = autoRep.findById(input.getAuto().getId());
+					Reservation result = resRep.findByResId(kundeId);
+					Auto autoResult = autoRep.findById(autoId);
 					Kunde kundeResult = kundeRep.findByKundenId(input.getKunde().getKundenId());
 					result.setTage(input.getTage());
 					result.setAuto(autoResult);
